@@ -31,7 +31,9 @@
 									<%= h @contact.company %>
 							<% end %>
 							<% if @contact.notes.any? %>
-							  <s<%= @contact.notes.last.created_on.to_date %>
+							  <div>
+									<%= @contact.notes.last.created_on.to_date %>
+									</div>
 							<% end %>
 						</p>
 				<% end %>
