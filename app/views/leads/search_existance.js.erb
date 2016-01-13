@@ -1,0 +1,5 @@
+<% if @exist.present? %>
+$("#<%=@type %>").parent("p").children('.exist_span').show();
+<% else %>
+$("#<%=@type %>").parent("p").children('.exist_span').hide();
+<%end %>

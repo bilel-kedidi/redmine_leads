@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<%= javascript_include_tag 'clockpicker', plugin: 'redmine_leads' %>
+
+<%= stylesheet_link_tag 'clockpicker', plugin: 'redmine_leads' %>
+<%= error_messages_for 'note' %>
+
+<div id="note_attributes">
+  <p class="extended-attributes" style="display: none;">
+    <%= f.select :type_id, collection_for_note_types_select %>
+    <label><%= l(:label_date) %>:</label>
+    <%= f.text_field :created_on, :size => 15, :value => (@note.try(:created_on) || Date.today).to_date %><span class="clockpicker">
+    <%= f.text_field :note_time, :value => (@note.try(:created_on) || Time.now).to_s(:time), :size => 5 %>
+  </span>
+  <%= calendar_for "note_created_on" %>
+  </p>
+  <%= f.text_area :content, :rows => 6, :class => 'wiki-edit' %><%# wikitoolbar_for 'note_content' %>
+  <% if @note && @note.custom_field_values.any? %>
+      <fieldset class="tabular extended-attributes" style="display: none;"><legend><%= l(:label_custom_field_plural) %></legend>
+        <% @note.custom_field_values.each do |value| %>
+            <p>
+              <%= custom_field_tag_with_label :note, value %>
+            </p>
+        <% end -%>
+      </fieldset>
+  <% end %>
+  <fieldset class="extended-attributes" style="display: none;"><legend><%= l(:label_attachment_plural) %></legend>
+    <p id="note_attachments"><%= render :partial => 'attachments/form', :locals => {:container => @note} %></p>
+  </fieldset>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.clockpicker').clockpicker({autoclose:true});
+      $('.clockpicker').clockpicker({autoclose:true});
+    })
+  </script>
+</div>
