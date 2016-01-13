@@ -257,7 +257,7 @@ class LeadsController < ApplicationController
     @tag_list = RedmineCrm::TagList.from(@contacts.map(&:tag_list).inject{|memo,t| memo | t})
     @project = @projects.first
     @assignables = @projects.map(&:assignable_users).inject{|memo,a| memo & a}
-    @add_projects = Project.allowed_to(:edit_contacts).order(:lft)
+    @add_projects = Project.allowed_to(:edit_leads).order(:lft)
   end
 
   def bulk_update
@@ -268,8 +268,8 @@ class LeadsController < ApplicationController
       contact.reload
       params[:contact][:tag_list] = (contact.tag_list + RedmineCrm::TagList.from(params[:add_tag_list]) - RedmineCrm::TagList.from(params[:delete_tag_list])).uniq
 
-      add_project_ids = (!params[:add_projects_list].to_s.blank? && params[:add_projects_list].is_a?(Array))  ? Project.allowed_to(:edit_contacts).where(:id => params[:add_projects_list].collect{|p| p.to_i}).map(&:id) : []
-      delete_project_ids = (!params[:delete_projects_list].to_s.blank? && params[:delete_projects_list].is_a?(Array)) ? Project.allowed_to(:edit_contacts).where(:id => params[:delete_projects_list].collect{|p| p.to_i}).map(&:id) : []
+      add_project_ids = (!params[:add_projects_list].to_s.blank? && params[:add_projects_list].is_a?(Array))  ? Project.allowed_to(:edit_leads).where(:id => params[:add_projects_list].collect{|p| p.to_i}).map(&:id) : []
+      delete_project_ids = (!params[:delete_projects_list].to_s.blank? && params[:delete_projects_list].is_a?(Array)) ? Project.allowed_to(:edit_leads).where(:id => params[:delete_projects_list].collect{|p| p.to_i}).map(&:id) : []
       project_ids = contact.project_ids + add_project_ids - delete_project_ids
       params[:contact][:project_ids] = project_ids if project_ids.any?
 
