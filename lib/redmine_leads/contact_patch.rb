@@ -89,7 +89,7 @@ module  RedmineLeads
           if current_project && self.projects.visible.include?(current_project)
             @project  = current_project
           else
-            @project  = self.projects.visible.where("#{Project.allowed_to_condition(user, :view_leads)} OR #{Project.allowed_to_condition(user, :view_contacts)}").first
+            @project  = self.projects.visible.where("#{Project.allowed_to_condition(User.current, :view_leads)} OR #{Project.allowed_to_condition(User.current, :view_contacts)}").first
           end
 
           @project ||= self.projects.first
