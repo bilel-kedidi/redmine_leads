@@ -2,14 +2,19 @@
 
 <h3><%= l(:label_crm_module_plural) %></h3>
 <% if User.current.allowed_to?(:view_contacts, @project, :global => true) or User.current.allowed_to?(:view_leads, @project, :global => true) %>
-    <%= link_to l(:label_contact_plural), { :controller => 'contacts', :action => 'index', :project_id => @project, :set_filter => 1} %>
+    <%= link_to l(:label_lead_plural), { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1} %>
     |
 <% end %>
 <% if User.current.allowed_to?(:view_deals, @project, :global => true)   and (!User.current.allowed_to_globally?(:hide_deals) or User.current.admin?)  %>
     <%= link_to l(:label_deal_plural), { :controller => 'deals', :action => 'index', :project_id => @project, :set_filter => 1} %>
     |
 <% end %>
+<% if User.current.allowed_to?(:view_assigned_lead, @project, :global => true) %>
+    <%= link_to 'Assigned Lead', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["assigned_to_id", ""], "op"=>{"assigned_to_id"=>"="}, "v"=>{"assigned_to_id"=>["me"]}} %>
 
-<%= link_to l(:label_crm_note_plural), { :controller => 'contacts', :action => 'contacts_notes', :project_id => @project} %>
+    |
+<% end %>
+<%= link_to l(:label_crm_note_plural), { :controller => 'leads', :action => 'contacts_notes', :project_id => @project} %>
 
-<%= call_hook(:view_contacts_sidebar_bottom) %>
+
+     <%= call_hook(:view_contacts_sidebar_bottom) %>

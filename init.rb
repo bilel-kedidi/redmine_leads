@@ -6,6 +6,8 @@ Redmine::Plugin.register :redmine_leads do
 
   requires_redmine :version_or_higher => '2.3'
 
+  require 'redmine_contacts'
+
   project_module :leads do
     permission :view_leads, {
         :leads => [:show, :index, :live_search, :contacts_notes, :context_menu],
