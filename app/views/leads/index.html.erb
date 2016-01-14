@@ -61,7 +61,12 @@
                   $('#date_filter').on('change', function(){
 
                     h = $('#date_filter_link').attr('href');
-                    h += "&v%5Blast_note%5D%5B%5D="+ $(this).val();
+                    if($(this).val() == "")
+                    {
+                      h="?set_filter=1"
+                    }
+                    else
+                      h += "&v%5Blast_note%5D%5B%5D="+ $(this).val();
                     $('#date_filter_link').attr('href', h);
                     $('#date_filter_link').get(0).click();
                   })
@@ -83,7 +88,12 @@
                     $(document).ready(function(){
                       $('#status_view').on('change', function(){
                         h = $('#status_filter_link').attr('href');
-                        h += "&v%5Bcf_<%= cf.id %>%5D%5B%5D=nul"+ $(this).val();
+                        if($(this).val() == "")
+                        {
+                          h="?set_filter=1"
+                        }
+                        else
+                         h += "&v%5Bcf_<%= cf.id %>%5D%5B%5D=nul"+ $(this).val();
                         $('#status_filter_link').attr('href', h);
                         $('#status_filter_link').get(0).click();
                       })
