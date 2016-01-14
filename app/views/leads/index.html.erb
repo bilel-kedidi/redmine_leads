@@ -41,6 +41,57 @@
                 <%= text_field_tag(:search, params[:search], :autocomplete => "off", :class => "live_search_field", :placeholder => l(:label_crm_contact_search) ) %>
             </span>
           <% end %>
+
+          <% if User.current.allowed_to_globally?(:view_date_filter) %>
+            <span class="date_filter">
+              <% value = if params['v'] and params['v']['last_note']
+                           params['v']['last_note']
+                           else
+                           ''
+                         end
+
+              %>
+              <%= text_field_tag :date_filter,value, :size => 12 %><%= calendar_for('date_filter') %>
+              <span  hidden>
+                  <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["last_note", ""], "op"=>{"last_note"=>"="}}, {id: "date_filter_link"} %>
+              </span>
+            </span>
+              <script>
+                $(document).ready(function(){
+                  $('#date_filter').on('change', function(){
+
+                    h = $('#date_filter_link').attr('href');
+                    h += "&v%5Blast_note%5D%5B%5D="+ $(this).val();
+                    $('#date_filter_link').attr('href', h);
+                    $('#date_filter_link').get(0).click();
+                  })
+                })
+              </script>
+          <% end %>
+          <% if User.current.allowed_to_globally?(:view_status_filter)
+               cf = CustomField.where(type: 'ContactCustomField').
+                  where(name: 'Status').where(field_format: "list").first
+
+              if cf %>
+                  Status: <%= select_tag :status_view, options_for_select(cf.possible_values) %>
+
+                  <span  hidden>
+                  <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["cf_#{cf.id}", ""], "op"=>{"cf_#{cf.id}"=>"="} }, {id: "status_filter_link"}%>
+              </span>
+                  <script>
+
+                    $(document).ready(function(){
+                      $('#status_view').on('change', function(){
+                        h = $('#status_filter_link').attr('href');
+                        h += "&v%5Bcf_<%= cf.id %>%5D%5B%5D=nul"+ $(this).val();
+                        $('#status_filter_link').attr('href', h);
+                        $('#status_filter_link').get(0).click();
+                      })
+                    })
+                  </script>
+          <% end
+             end %>
+
           <span class="tags">
             <%= tag_links(@filter_tags) %>
         </span>
