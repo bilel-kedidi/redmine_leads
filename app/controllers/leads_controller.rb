@@ -73,7 +73,7 @@ class LeadsController < ApplicationController
       @contacts_pages = Paginator.new(@contacts_count, @limit, params['page'])
       @offset ||= @contacts_pages.offset
       @contact_count_by_group = @query.object_count_by_group
-      if params[:module] == "followup"
+
         @contacts = @query.results_scope(
             :include => [:avatar],
             :search => params[:search],
@@ -81,15 +81,6 @@ class LeadsController < ApplicationController
             :limit  =>  @limit,
             :offset =>  @offset
         )
-      else
-        @contacts = @query.results_scope(
-            :include => [:avatar],
-            :search => params[:search],
-            :order => sort_clause,
-            :limit  =>  @limit,
-            :offset =>  @offset
-        )
-      end
 
       @filter_tags = @query.filters["tags"] && @query.filters["tags"][:values]
 

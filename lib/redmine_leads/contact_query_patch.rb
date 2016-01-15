@@ -28,7 +28,8 @@ module  RedmineLeads
             QueryColumn.new(:created_on, :sortable => "#{Contact.table_name}.created_on"),
             QueryColumn.new(:updated_on, :sortable => "#{Contact.table_name}.updated_on"),
             QueryColumn.new(:assigned_to, :sortable => lambda {User.fields_for_order_statement}, :groupable => true),
-            QueryColumn.new(:author, :sortable => lambda {User.fields_for_order_statement("authors")})
+            QueryColumn.new(:author, :sortable => lambda {User.fields_for_order_statement("authors")}),
+            QueryColumn.new(:last_note, :sortable => "#{Contact.table_name}.created_on", :caption => "Last_note")
         ]
       end
     end

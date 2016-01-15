@@ -95,6 +95,7 @@ end
 
 Rails.application.config.to_prepare do
   Contact.send(:include, RedmineLeads::ContactPatch)
+  ContactNote.send(:include, RedmineLeads::ContactNotePatch)
   ContactQuery.send(:include, RedmineLeads::ContactQueryPatch)
 end
 
