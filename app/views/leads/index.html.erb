@@ -11,42 +11,42 @@
 
 <% html_title(@query.new_record? ? l(:label_contact_plural) : @query.name) %>
 
-    <%= form_tag({ :controller => 'leads', :action => 'index', :project_id => @project }, :method => :get, :id => 'query_form') do %>
-        <script type="text/javascript">
-          jQuery(function($) {
-            // when the #search field changes
-            $("#search").observe_field(2, function() {
-              var form = $("#query_form"); // grab the form wrapping the search bar.
-              var url = form.attr("action");
-              form.find('[name="c[]"] option').each(function(i, elem){
-                $(elem).attr('selected', true)
-              })
-              var formData = form.serialize();
-              form.find('[name="c[]"] option').each(function(i, elem){
-                $(elem).attr('selected', false)
-              })
-              $.get(url, formData, function(data) { // perform an AJAX get, the trailing function is what happens on successful get.
-                $("#contact_list").html(data); // replace the "results" div with the result of action taken
-              });
-            });
+<%= form_tag({ :controller => 'leads', :action => 'index', :project_id => @project }, :method => :get, :id => 'query_form') do %>
+    <script type="text/javascript">
+      jQuery(function($) {
+        // when the #search field changes
+        $("#search").observe_field(2, function() {
+          var form = $("#query_form"); // grab the form wrapping the search bar.
+          var url = form.attr("action");
+          form.find('[name="c[]"] option').each(function(i, elem){
+            $(elem).attr('selected', true)
+          })
+          var formData = form.serialize();
+          form.find('[name="c[]"] option').each(function(i, elem){
+            $(elem).attr('selected', false)
+          })
+          $.get(url, formData, function(data) { // perform an AJAX get, the trailing function is what happens on successful get.
+            $("#contact_list").html(data); // replace the "results" div with the result of action taken
           });
-        </script>
+        });
+      });
+    </script>
 
-        <h2 class="contacts_header">
+    <h2 class="contacts_header">
         <span id='scope_header' class="scope_title">
         <%= @query.new_record? ? l(:label_contact_plural) : h(@query.name) %>
         </span>
-          <% if !User.current.allowed_to_globally?(:hide_search) or User.current.admin? %>
+      <% if !User.current.allowed_to_globally?(:hide_search) or User.current.admin? %>
             <span class="live_search">
                 <%= text_field_tag(:search, params[:search], :autocomplete => "off", :class => "live_search_field", :placeholder => l(:label_crm_contact_search) ) %>
             </span>
-          <% end %>
+      <% end %>
 
-          <% if User.current.allowed_to?(:view_date_filter, @project, :global => true) %>
+      <% if User.current.allowed_to?(:view_date_filter, @project, :global => true) %>
             <span class="date_filter">
               <% value = if params['v'] and params['v']['last_note']
                            params['v']['last_note']
-                           else
+                         else
                            ''
                          end
 
@@ -56,49 +56,49 @@
                   <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["last_note", ""], "op"=>{"last_note"=>"="}}, {id: "date_filter_link"} %>
               </span>
             </span>
-              <script>
-                $(document).ready(function(){
-                  $('#date_filter').on('change', function(){
+          <script>
+            $(document).ready(function(){
+              $('#date_filter').on('change', function(){
 
-                    h = $('#date_filter_link').attr('href');
+                h = $('#date_filter_link').attr('href');
+                if($(this).val() == "")
+                {
+                  h="?set_filter=1"
+                }
+                else
+                  h += "&v%5Blast_note%5D%5B%5D="+ $(this).val();
+                $('#date_filter_link').attr('href', h);
+                $('#date_filter_link').get(0).click();
+              })
+            })
+          </script>
+      <% end %>
+      <% if User.current.allowed_to?(:view_status_filter, @project, :global => true)
+           cf = CustomField.where(type: 'ContactCustomField').
+               where(name: 'Status').where(field_format: "list").first
+
+           if cf %>
+              Status: <%= select_tag :status_view, options_for_select(cf.possible_values) %>
+
+              <span  hidden>
+                  <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["cf_#{cf.id}", ""], "op"=>{"cf_#{cf.id}"=>"="} }, {id: "status_filter_link"}%>
+              </span>
+              <script>
+
+                $(document).ready(function(){
+                  $('#status_view').on('change', function(){
+                    h = $('#status_filter_link').attr('href');
                     if($(this).val() == "")
                     {
                       h="?set_filter=1"
                     }
                     else
-                      h += "&v%5Blast_note%5D%5B%5D="+ $(this).val();
-                    $('#date_filter_link').attr('href', h);
-                    $('#date_filter_link').get(0).click();
+                      h += "&v%5Bcf_<%= cf.id %>%5D%5B%5D=nul"+ $(this).val();
+                    $('#status_filter_link').attr('href', h);
+                    $('#status_filter_link').get(0).click();
                   })
                 })
               </script>
-          <% end %>
-          <% if User.current.allowed_to?(:view_status_filter, @project, :global => true)
-               cf = CustomField.where(type: 'ContactCustomField').
-                  where(name: 'Status').where(field_format: "list").first
-
-              if cf %>
-                  Status: <%= select_tag :status_view, options_for_select(cf.possible_values) %>
-
-                  <span  hidden>
-                  <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["cf_#{cf.id}", ""], "op"=>{"cf_#{cf.id}"=>"="} }, {id: "status_filter_link"}%>
-              </span>
-                  <script>
-
-                    $(document).ready(function(){
-                      $('#status_view').on('change', function(){
-                        h = $('#status_filter_link').attr('href');
-                        if($(this).val() == "")
-                        {
-                          h="?set_filter=1"
-                        }
-                        else
-                         h += "&v%5Bcf_<%= cf.id %>%5D%5B%5D=nul"+ $(this).val();
-                        $('#status_filter_link').attr('href', h);
-                        $('#status_filter_link').get(0).click();
-                      })
-                    })
-                  </script>
           <% end
              end %>
 
@@ -106,10 +106,10 @@
             <%= tag_links(@filter_tags) %>
         </span>
 
-        </h2>
+    </h2>
 
-        <%= hidden_field_tag 'set_filter', '1' %>
-        <%= hidden_field_tag 'object_type', 'contact' %>
+    <%= hidden_field_tag 'set_filter', '1' %>
+    <%= hidden_field_tag 'object_type', 'contact' %>
     <% if !User.current.allowed_to_globally?(:hide_filters_and_options) or User.current.admin? %>
         <div id="query_form_content" class="hide-when-print">
           <fieldset id="filters" class="collapsible <%= @query.new_record? ? "" : "collapsed" %>">
@@ -174,7 +174,11 @@
       <% if @contacts.empty? %>
           <p class="nodata"><%= l(:label_no_data) %></p>
       <% else %>
-          <%= render :partial => contacts_list_style %>
+          <% if !User.current.allowed_to_globally?(:hide_filters_and_options) or User.current.admin? %>
+              <%= render :partial => 'list' %>
+          <% else %>
+              <%= render :partial => contacts_list_style %>
+          <% end %>
           <p class="pagination"><%= pagination_links_full @contacts_pages, @contacts_count %></p>
       <% end %>
     </div>
