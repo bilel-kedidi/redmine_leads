@@ -42,7 +42,7 @@
             </span>
           <% end %>
 
-          <% if User.current.allowed_to_globally?(:view_date_filter) %>
+          <% if User.current.allowed_to?(:view_date_filter, @project, :global => true) %>
             <span class="date_filter">
               <% value = if params['v'] and params['v']['last_note']
                            params['v']['last_note']
@@ -73,7 +73,7 @@
                 })
               </script>
           <% end %>
-          <% if User.current.allowed_to_globally?(:view_status_filter)
+          <% if User.current.allowed_to?(:view_status_filter, @project, :global => true)
                cf = CustomField.where(type: 'ContactCustomField').
                   where(name: 'Status').where(field_format: "list").first
 

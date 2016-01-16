@@ -19,7 +19,9 @@ module  RedmineLeads
 
 
           if c and c.note_id == self.id
-            c.last_note = c.followup
+            cn = c.notes.order("#{Note.table_name}.created_on DESC").first
+            c.last_note = cn.created_on
+            # c.last_note = c.followup
             c.save
           end
         end
