@@ -26,6 +26,13 @@ module  RedmineLeads
         end
 
 
+        def self.editable_condition(user, options={})
+          self.visible_condition(user, options) + " AND (#{Project.allowed_to_condition(user, :edit_contacts)} OR #{Project.allowed_to_condition(user, :edit_leads)} )"
+        end
+
+        def self.deletable_condition(user, options={})
+          self.visible_condition(user, options) + " AND (#{Project.allowed_to_condition(user, :delete_contacts)} OR #{Project.allowed_to_condition(user, :delete_leads)} )"
+        end
 
         def self.visible_condition(user, options={})
           user.reload

@@ -9,7 +9,7 @@
 				<% if !contact_card.is_company %>
 				<%= " #{l(:label_crm_at_company)} " unless (contact_card.job_title.blank? or contact_card.company.blank?) %>
   				<% if contact_card.contact_company %>
-  					<%= link_to contact_card.contact_company.name, {:controller => 'contacts', :action => 'show', :project_id => contact_card.contact_company.project(@project), :id => contact_card.contact_company.id } %>
+  					<%= link_to contact_card.contact_company.name, {:controller => 'leads', :action => 'show', :project_id => contact_card.contact_company.project(@project), :id => contact_card.contact_company.id } %>
   				<% else %>
   					<%= h contact_card.company %>
   				<% end %>

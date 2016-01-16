@@ -26,7 +26,7 @@
 							<%= h @contact.job_title %>
 							<%= " #{l(:label_crm_at_company)} " unless (@contact.job_title.blank? or @contact.company.blank?) %>
 							<% if @contact.contact_company %>
-									<%= link_to @contact.contact_company.name, {:controller => 'contacts', :action => 'show', :project_id => @contact.contact_company.project(@project), :id => @contact.contact_company.id } %>
+									<%= link_to @contact.contact_company.name, {:controller => 'leads', :action => 'show', :project_id => @contact.contact_company.project(@project), :id => @contact.contact_company.id } %>
 							<% else %>
 									<%= h @contact.company %>
 							<% end %>

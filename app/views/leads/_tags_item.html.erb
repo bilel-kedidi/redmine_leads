@@ -14,6 +14,6 @@
 	<%- if !is_note -%>
 		<%= link_to tags_item.name + "#{"(" + tags_item.count.to_s + ")" if tags_item.count > 0}", {:project_id => @project}.merge!(tag_url), html_options %>
 	<%- else -%>
-		<%= link_to tags_item.name, {:controller => "contacts", :action => "contacts_notes", :project_id => @project, :tag => tags_item.name}, html_options %>
+		<%= link_to tags_item.name, {:controller => "leads", :action => "contacts_notes", :project_id => @project, :tag => tags_item.name}, html_options %>
 	<%- end -%>
 </span>
