@@ -53,7 +53,7 @@
               %>
               <%= text_field_tag :date_filter,value, :size => 12 %><%= calendar_for('date_filter') %>
               <span  hidden>
-                  <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["last_note", ""], "op"=>{"last_note"=>"="}}, {id: "date_filter_link"} %>
+                  <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["last_note", ""], "op"=>{"last_note"=>"="}, "search"=> params["search"]}, {id: "date_filter_link"} %>
               </span>
             </span>
           <script>
@@ -78,10 +78,10 @@
                where(name: 'Status').where(field_format: "list").first
 
            if cf %>
-              Status: <%= select_tag :status_view, options_for_select(cf.possible_values) %>
+              Status: <%= select_tag :status_view, options_for_select(['',cf.possible_values].flatten) %>
 
               <span  hidden>
-                  <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["cf_#{cf.id}", ""], "op"=>{"cf_#{cf.id}"=>"="} }, {id: "status_filter_link"}%>
+                  <%= link_to '#{Assigned Lead}', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["cf_#{cf.id}", ""], "op"=>{"cf_#{cf.id}"=>"="}, "search"=> params["search"] }, {id: "status_filter_link"}%>
               </span>
               <script>
 
