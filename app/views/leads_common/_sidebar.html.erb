@@ -10,7 +10,7 @@
     |
 <% end %>
 <% if User.current.allowed_to?(:view_follow_up, @project, :global => true) %>
-    <%= link_to 'Follow up', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["last_note", ""], "op"=>{"last_note"=>"*"}, "c"=>["id", "last_note", "name", "job_title", "company", "address"], "module"=> "followup", "sort"=>"last_note:desc,last_name,first_name" } %>
+    <%= link_to 'Follow up', { :controller => 'leads', :action => 'index', :project_id => @project, :set_filter => 1, "f"=>["last_note", ""], "op"=>{"last_note"=>"*"}, "c"=>["id", "last_note", "name", "job_title", "company", "address"], "module"=> "followup", "sort"=>"last_note:asc,last_name,first_name" } %>
 
     |
 <% end %>
