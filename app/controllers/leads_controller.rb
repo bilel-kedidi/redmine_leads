@@ -53,7 +53,7 @@ class LeadsController < ApplicationController
   include NotesHelper
 
   def index
-    hash = {"set_filter"=>"1", "object_type"=>"contact", "f"=>[""], "c"=>["id", "name", "job_title", "company", "address", "last_note"], "group_by"=>"", "contacts_list_style"=>"list"}
+    hash = {"set_filter"=>"1", "object_type"=>"contact", "f"=>[""], "c"=>["id", "name", "job_title", "company", "emails", "phones", "address", "last_note"], "group_by"=>"", "contacts_list_style"=>"list"}
     params.reverse_merge!(hash) if params['c'].nil?
     retrieve_crm_query('contact')
     sort_init(@query.sort_criteria.empty? ? [['last_name', 'asc'], ['first_name', 'asc']] : @query.sort_criteria)
