@@ -66,7 +66,7 @@ Redmine::Plugin.register :redmine_leads do
   end
 
 
-  menu :project_menu, :leads, { :controller => 'leads', :action => 'index' },
+  menu :project_menu, :contacts, { :controller => 'leads', :action => 'index' },
        caption: :label_lead_plural,
        :before => :activity, param: :project_id
 
