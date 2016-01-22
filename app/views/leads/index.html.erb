@@ -200,7 +200,7 @@
     <% if !User.current.allowed_to_globally?(:hide_tags) or User.current.admin?   %>
         <%= render :partial => 'tags_cloud', :object => @tags %>
     <% end %>
-    <%= render_sidebar_crm_queries('contact') %>
+    <%= render_sidebar_crm_queries2('contact') %>
     <% if !User.current.allowed_to_globally?(:hide_notes) or User.current.admin?  %>
         <%= render :partial => 'notes/last_notes', :object => @last_notes %>
     <% end %>

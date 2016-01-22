@@ -28,5 +28,11 @@ module  RedmineLeads
       end
     end
   end
+  module ClassMethods
+  end
+
+  module InstanceMethods
+
+  end
 end
 

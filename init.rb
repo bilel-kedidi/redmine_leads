@@ -97,5 +97,6 @@ Rails.application.config.to_prepare do
   Contact.send(:include, RedmineLeads::ContactPatch)
   Note.send(:include, RedmineLeads::NotePatch)
   ContactQuery.send(:include, RedmineLeads::ContactQueryPatch)
+  CrmQueriesHelper.send(:include, RedmineLeads::CrmQueriesHelperPatch)
 end
 
