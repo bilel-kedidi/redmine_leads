@@ -32,7 +32,7 @@
 							<% end %>
 							<% if @contact.notes.any? %>
 							  <div>
-									<%= @contact.notes.last.created_on.to_date %>
+									<%= @contact.notes.order("created_on ASC").last.created_on.to_date %>
 									</div>
 							<% end %>
 						</p>
