@@ -93,7 +93,7 @@
                       h="?set_filter=1"
                     }
                     else
-                      h += "&v%5Bcf_<%= cf.id %>%5D%5B%5D=nul"+ $(this).val();
+                      h += "&v%5Bcf_<%= cf.id %>%5D%5B%5D="+ $(this).val();
                     $('#status_filter_link').attr('href', h);
                     $('#status_filter_link').get(0).click();
                   })
