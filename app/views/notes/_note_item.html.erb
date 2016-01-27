@@ -29,7 +29,7 @@
           <%= "#{note_item.subject} - " unless note_item.subject.blank? %>
           <%= link_to_source(note_item.source) + "," if show_info %>
           <% day_future_past = note_item.created_on > Date.today ? 'left' : 'ago' %>
-          <%= authoring_note note_item.created_on, note_item.author %> <%= day_future_past %>
+          <%= authoring_note( note_item.created_on, note_item.author).gsub('ago', day_future_past).html_safe %>
           <%= link_to('&para;'.html_safe, {:controller => 'notes', :action => 'show', :project_id => @project, :id => note_item}, :title => l(:button_show), :class => "wiki-anchor") %>
         </h4>
         <div class="custom_fields">
